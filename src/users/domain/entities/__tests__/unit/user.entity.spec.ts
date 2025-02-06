@@ -16,10 +16,27 @@ describe('UserEntity unit tests', () => {
     sut = new UserEntity(props);
   });
 
-  it('Constructor method', () => {
-    expect(sut.props.name).toEqual(props.name);
-    expect(sut.props.email).toEqual(props.email);
-    expect(sut.props.password).toEqual(props.password);
-    expect(sut.props.createdAt).toBeInstanceOf(Date);
+  it("Should correctly define and validate the user's name property", () => {
+    expect(sut.name).toBeDefined();
+    expect(sut.name).toEqual(props.name);
+    expect(typeof sut.name).toBe('string');
+  });
+
+  it("Should correctly define and validate the user's email property", () => {
+    expect(sut.email).toBeDefined();
+    expect(sut.email).toEqual(props.email);
+    expect(typeof sut.email).toBe('string');
+  });
+
+  it("Should correctly define and validate the user's password property", () => {
+    expect(sut.password).toBeDefined();
+    expect(sut.password).toEqual(props.password);
+    expect(typeof sut.password).toBe('string');
+  });
+
+  it("Should correctly define and validate the user's createdAt property", () => {
+    expect(sut.createdAt).toBeDefined();
+    expect(sut.createdAt).toEqual(props.createdAt);
+    expect(sut.createdAt).toBeInstanceOf(Date);
   });
 });
