@@ -1,4 +1,5 @@
 import { UserDataBuilder } from '@/users/domain/tests/helpers/user-data-builder';
+import { faker } from '@faker-js/faker/.';
 import { UserEntity } from '../../user.entity';
 import { UserProps } from '../../user.types';
 
@@ -33,5 +34,33 @@ describe('UserEntity unit tests', () => {
     expect(sut.createdAt).toBeDefined();
     expect(sut.createdAt).toEqual(props.createdAt);
     expect(sut.createdAt).toBeInstanceOf(Date);
+  });
+
+  it("Should correctly set the user's name property", () => {
+    const name = faker.person.fullName();
+    sut['name'] = name;
+
+    expect(sut.name).toEqual(name);
+  });
+
+  it("Should correctly set the user's password property", () => {
+    const password = faker.internet.password();
+    sut['password'] = password;
+
+    expect(sut.password).toEqual(password);
+  });
+
+  it("Should correctly update the user's properties", () => {
+    const name = faker.person.fullName();
+    sut.update(name);
+
+    expect(sut.name).toEqual(name);
+  });
+
+  it("Should correctly update the user's password property", () => {
+    const password = faker.internet.password();
+    sut.updatePassword(password);
+
+    expect(sut.password).toEqual(password);
   });
 });
