@@ -42,8 +42,10 @@ describe('ClassValidatorFields integration tests', () => {
 
   it('Should validate fields without errors', () => {
     const validator = new StubClassValidatorFields();
+    const props: StubRulesProps = { name: 'name', price: 10 };
 
-    expect(validator.isValid({ name: 'name', price: 10 })).toBeTruthy();
+    expect(validator.isValid(props)).toBeTruthy();
+    expect(validator.validatedData).toStrictEqual(new StubRules(props));
     expect(validator.errors).toBeUndefined();
   });
 });
