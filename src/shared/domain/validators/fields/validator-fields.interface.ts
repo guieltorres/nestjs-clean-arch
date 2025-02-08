@@ -1,9 +1,9 @@
 import { FieldErrors } from './types';
 
 interface ValidatorFieldInterface<PropsValidated> {
-  errors: FieldErrors | null;
-  validatedData: PropsValidated | null;
-  validate(data: any): boolean;
+  errors: FieldErrors;
+  validatedData: PropsValidated;
+  validate(data: PropsValidated): boolean;
 }
 
 export type { ValidatorFieldInterface };
