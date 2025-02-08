@@ -1,15 +1,14 @@
 import * as classValidator from 'class-validator';
 import { ClassValidatorFields } from '../../class-validator-fields';
+import { StubClassValidatorFieldsProps } from './types';
 
-class StubClassValidatorFields extends ClassValidatorFields<{
-  field: string;
-}> {}
+class StubClassValidatorFields extends ClassValidatorFields<StubClassValidatorFieldsProps> {}
 
 describe('ClassValidatorFields unit tests', () => {
   it('Should initialize errors and validateData variables correctly', () => {
     const sut = new StubClassValidatorFields();
-    expect(sut.errors).toBeNull();
-    expect(sut.validatedData).toBeNull();
+    expect(sut.errors).toBeUndefined();
+    expect(sut.validatedData).toBeUndefined();
   });
 
   it('Should validate field with errors', () => {
@@ -19,10 +18,10 @@ describe('ClassValidatorFields unit tests', () => {
     ]);
 
     const sut = new StubClassValidatorFields();
-    expect(sut.validate(null)).toBeFalsy();
+    expect(sut.validate({ field: '' })).toBeFalsy();
     expect(spyValidateSync).toHaveBeenCalled();
     expect(sut.errors).toStrictEqual({ field: ['test error'] });
-    expect(sut.validatedData).toBeNull();
+    expect(sut.validatedData).toBeUndefined();
   });
 
   it('Should validate field without errors', () => {
@@ -30,12 +29,12 @@ describe('ClassValidatorFields unit tests', () => {
     spyValidateSync.mockReturnValue([]);
 
     const value = 'value';
-    const validatedValue = { field: value };
+    const validateValue: StubClassValidatorFieldsProps = { field: value };
 
     const sut = new StubClassValidatorFields();
-    expect(sut.validate(validatedValue)).toBeTruthy();
+    expect(sut.validate(validateValue)).toBeTruthy();
     expect(spyValidateSync).toHaveBeenCalled();
-    expect(sut.errors).toBeNull();
-    expect(sut.validatedData).toStrictEqual(validatedValue);
+    expect(sut.errors).toBeUndefined();
+    expect(sut.validatedData).toStrictEqual(validateValue);
   });
 });

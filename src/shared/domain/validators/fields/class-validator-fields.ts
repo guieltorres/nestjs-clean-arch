@@ -5,10 +5,10 @@ import { ValidatorFieldInterface } from './validator-fields.interface';
 export abstract class ClassValidatorFields<PropsValidated>
   implements ValidatorFieldInterface<PropsValidated>
 {
-  errors: FieldErrors = null;
-  validatedData: PropsValidated | null = null;
-  validate(data: any): boolean {
-    const errors = validateSync(data);
+  errors: FieldErrors;
+  validatedData: PropsValidated;
+  validate(data: PropsValidated): boolean {
+    const errors = validateSync({ data });
     const hasErrors = errors.length > 0;
     if (hasErrors) {
       this.errors = this.formatErrors(errors);
