@@ -7,7 +7,7 @@ export abstract class ClassValidatorFields<PropsValidated>
 {
   errors: FieldErrors;
   validatedData: PropsValidated;
-  validate(data: PropsValidated): boolean {
+  isValid(data: PropsValidated): boolean {
     const errors = validateSync(data as object);
     const hasErrors = errors.length > 0;
     if (hasErrors) {

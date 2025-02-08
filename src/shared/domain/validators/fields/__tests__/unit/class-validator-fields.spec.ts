@@ -18,7 +18,7 @@ describe('ClassValidatorFields unit tests', () => {
     ]);
 
     const sut = new StubClassValidatorFields();
-    expect(sut.validate({ field: '' })).toBeFalsy();
+    expect(sut.isValid({ field: '' })).toBeFalsy();
     expect(spyValidateSync).toHaveBeenCalled();
     expect(sut.errors).toStrictEqual({ field: ['test error'] });
     expect(sut.validatedData).toBeUndefined();
@@ -32,7 +32,7 @@ describe('ClassValidatorFields unit tests', () => {
     const validateValue: StubClassValidatorFieldsProps = { field: value };
 
     const sut = new StubClassValidatorFields();
-    expect(sut.validate(validateValue)).toBeTruthy();
+    expect(sut.isValid(validateValue)).toBeTruthy();
     expect(spyValidateSync).toHaveBeenCalled();
     expect(sut.errors).toBeUndefined();
     expect(sut.validatedData).toStrictEqual(validateValue);
