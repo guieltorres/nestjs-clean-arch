@@ -11,8 +11,8 @@ class StubRules {
   @IsNumber()
   @IsNotEmpty()
   price: number;
-  constructor(data: Partial<StubRulesProps>) {
-    Object.assign(this, data);
+  constructor({ name, price }: Partial<StubRulesProps>) {
+    Object.assign(this, { name, price });
   }
 }
 
