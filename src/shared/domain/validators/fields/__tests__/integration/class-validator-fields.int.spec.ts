@@ -17,14 +17,20 @@ class StubRules {
 }
 
 class StubClassValidatorFields extends ClassValidatorFields<StubRules> {
-  isValid(data: Partial<StubRulesProps>): boolean {
-    return super.isValid(new StubRules(data));
+  isValid({ name, price }: Partial<StubRulesProps>): boolean {
+    return super.isValid(new StubRules({ name, price }));
+  }
+}
+
+class StubClassValidatorFactory {
+  static create(): StubClassValidatorFields {
+    return new StubClassValidatorFields();
   }
 }
 
 describe('ClassValidatorFields integration tests', () => {
   it('Should validate fields with errors', () => {
-    const validator = new StubClassValidatorFields();
+    const validator = StubClassValidatorFactory.create();
 
     expect(validator.isValid({})).toBeFalsy();
     expect(validator.errors).toStrictEqual({
@@ -41,7 +47,7 @@ describe('ClassValidatorFields integration tests', () => {
   });
 
   it('Should validate fields without errors', () => {
-    const validator = new StubClassValidatorFields();
+    const validator = StubClassValidatorFactory.create();
     const props: StubRulesProps = { name: 'name', price: 10 };
 
     expect(validator.isValid(props)).toBeTruthy();

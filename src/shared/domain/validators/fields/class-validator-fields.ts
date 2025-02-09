@@ -20,7 +20,9 @@ export abstract class ClassValidatorFields<PropsValidated>
 
   private formatErrors(errors: ValidationError[]): FieldErrors {
     return errors.reduce((acc, error) => {
-      if (acc) acc[error.property] = Object.values(error.constraints ?? {});
+      if (error.constraints) {
+        acc[error.property] = Object.values(error.constraints);
+      }
       return acc;
     }, {});
   }
