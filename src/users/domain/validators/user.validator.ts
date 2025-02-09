@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
   MaxLength,
+  MinLength,
 } from 'class-validator';
 import { UserProps } from '../entities/user.types';
 
@@ -21,8 +22,8 @@ class UserRules {
   @IsString()
   email: string;
 
-  @IsNotEmpty()
   @MaxLength(100)
+  @MinLength(8)
   @IsString()
   password: string;
 

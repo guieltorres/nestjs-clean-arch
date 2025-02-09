@@ -12,6 +12,15 @@ describe('UserValidator unit tests', () => {
     sut = UserValidatorFactory.create();
   });
 
+  it('Should validate user fields without errors', () => {
+    const userProps = UserDataBuilder();
+    const isValid = sut.isValid(userProps);
+
+    expect(isValid).toBeTruthy();
+    expect(sut.errors).toBeUndefined();
+    expect(sut.validatedData).toStrictEqual(new UserRules(userProps));
+  });
+
   describe('Name field', () => {
     it('Should validate name field with invalid values', () => {
       const isValid = sut.isValid({});
@@ -53,15 +62,6 @@ describe('UserValidator unit tests', () => {
         'name must be a string',
         'name must be shorter than or equal to 255 characters',
       ]);
-    });
-
-    it('Should validate name field without errors', () => {
-      const userProps = UserDataBuilder();
-      const isValid = sut.isValid(userProps);
-
-      expect(isValid).toBeTruthy();
-      expect(sut.errors).toBeUndefined();
-      expect(sut.validatedData).toStrictEqual(new UserRules(userProps));
     });
   });
 
@@ -113,14 +113,52 @@ describe('UserValidator unit tests', () => {
         'email must be an email',
       ]);
     });
+  });
 
-    it('Should validate email field without errors', () => {
-      const userProps = UserDataBuilder();
+  describe('password field', () => {
+    it('Should validate password field with invalid values', () => {
+      const isValid = sut.isValid({});
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['password']).toStrictEqual([
+        'password must be a string',
+        'password must be longer than or equal to 8 characters',
+        'password must be shorter than or equal to 100 characters',
+      ]);
+    });
+
+    it('Should validate password field with invalid length', () => {
+      const password = 'a'.repeat(101);
+      const userProps = { ...UserDataBuilder(), password: password };
       const isValid = sut.isValid(userProps);
 
-      expect(isValid).toBeTruthy();
-      expect(sut.errors).toBeUndefined();
-      expect(sut.validatedData).toStrictEqual(new UserRules(userProps));
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['password']).toStrictEqual([
+        'password must be shorter than or equal to 100 characters',
+      ]);
+    });
+
+    it('Should validate password field with empty value', () => {
+      const userProps = { ...UserDataBuilder(), password: '' };
+      const isValid = sut.isValid(userProps);
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['password']).toStrictEqual([
+        'password must be longer than or equal to 8 characters',
+      ]);
+    });
+
+    it('Should validate password field with invalid type', () => {
+      const password = 1234 as any;
+      const userProps = { ...UserDataBuilder(), password: password };
+      const isValid = sut.isValid(userProps);
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['password']).toStrictEqual([
+        'password must be a string',
+        'password must be longer than or equal to 8 characters',
+        'password must be shorter than or equal to 100 characters',
+      ]);
     });
   });
 });
