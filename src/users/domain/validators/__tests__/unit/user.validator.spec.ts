@@ -161,4 +161,16 @@ describe('UserValidator unit tests', () => {
       ]);
     });
   });
+
+  describe('CreatedAt field', () => {
+    it('Should validate createdAt field with invalid values', () => {
+      const createdAt = 1234 as any;
+      const isValid = sut.isValid({ createdAt: createdAt });
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['createdAt']).toStrictEqual([
+        'createdAt must be a Date instance',
+      ]);
+    });
+  });
 });
