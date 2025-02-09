@@ -64,4 +64,63 @@ describe('UserValidator unit tests', () => {
       expect(sut.validatedData).toStrictEqual(new UserRules(userProps));
     });
   });
+
+  describe('Email field', () => {
+    it('Should validate email field with invalid values', () => {
+      const isValid = sut.isValid({});
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['email']).toStrictEqual([
+        'email must be a string',
+        'email should not be empty',
+        'email must be shorter than or equal to 255 characters',
+        'email must be an email',
+      ]);
+    });
+
+    it('Should validate email field with invalid length', () => {
+      const email = 'a'.repeat(256);
+      const userProps = { ...UserDataBuilder(), email: email };
+      const isValid = sut.isValid(userProps);
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['email']).toStrictEqual([
+        'email must be shorter than or equal to 255 characters',
+        'email must be an email',
+      ]);
+    });
+
+    it('Should validate email field with empty value', () => {
+      const userProps = { ...UserDataBuilder(), email: '' };
+      const isValid = sut.isValid(userProps);
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['email']).toStrictEqual([
+        'email should not be empty',
+        'email must be an email',
+      ]);
+    });
+
+    it('Should validate email field with invalid type', () => {
+      const email = 1234 as any;
+      const userProps = { ...UserDataBuilder(), email: email };
+      const isValid = sut.isValid(userProps);
+
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['email']).toStrictEqual([
+        'email must be a string',
+        'email must be shorter than or equal to 255 characters',
+        'email must be an email',
+      ]);
+    });
+
+    it('Should validate email field without errors', () => {
+      const userProps = UserDataBuilder();
+      const isValid = sut.isValid(userProps);
+
+      expect(isValid).toBeTruthy();
+      expect(sut.errors).toBeUndefined();
+      expect(sut.validatedData).toStrictEqual(new UserRules(userProps));
+    });
+  });
 });
