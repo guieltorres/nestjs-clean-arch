@@ -8,31 +8,28 @@ describe('UserEntity unit tests', () => {
   let sut: UserEntity;
 
   beforeEach(() => {
+    UserEntity.validate = jest.fn();
     props = UserDataBuilder();
     sut = new UserEntity(props);
   });
 
-  it("Should correctly define and validate the user's name property", () => {
-    expect(sut.name).toBeDefined();
+  it('Should instantiate user entity with correct properties', () => {
+    expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.name).toEqual(props.name);
-    expect(typeof sut.name).toBe('string');
-  });
-
-  it("Should correctly define and validate the user's email property", () => {
-    expect(sut.email).toBeDefined();
     expect(sut.email).toEqual(props.email);
-    expect(typeof sut.email).toBe('string');
-  });
-
-  it("Should correctly define and validate the user's password property", () => {
-    expect(sut.password).toBeDefined();
     expect(sut.password).toEqual(props.password);
-    expect(typeof sut.password).toBe('string');
+    expect(sut.createdAt).toEqual(props.createdAt);
   });
 
-  it("Should correctly define and validate the user's createdAt property", () => {
+  it('Should define and validate user properties', () => {
+    expect(sut.name).toBeDefined();
+    expect(sut.email).toBeDefined();
+    expect(sut.password).toBeDefined();
     expect(sut.createdAt).toBeDefined();
-    expect(sut.createdAt).toEqual(props.createdAt);
+
+    expect(typeof sut.name).toBe('string');
+    expect(typeof sut.email).toBe('string');
+    expect(typeof sut.password).toBe('string');
     expect(sut.createdAt).toBeInstanceOf(Date);
   });
 
@@ -54,6 +51,7 @@ describe('UserEntity unit tests', () => {
     const name = faker.person.fullName();
     sut.update(name);
 
+    expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.name).toEqual(name);
   });
 
@@ -61,6 +59,7 @@ describe('UserEntity unit tests', () => {
     const password = faker.internet.password();
     sut.updatePassword(password);
 
+    expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.password).toEqual(password);
   });
 });
