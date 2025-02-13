@@ -1,11 +1,7 @@
 import { faker } from '@faker-js/faker/.';
 import { validate } from 'uuid';
 import { Entity } from '../../entity';
-
-type StubProps = {
-  prop1: string;
-  prop2: number;
-};
+import { StubProps } from './types';
 
 class StubEntity extends Entity<StubProps> {}
 
