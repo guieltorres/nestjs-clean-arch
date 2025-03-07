@@ -37,22 +37,54 @@ export class SearchParams {
   }
 
   private set page(value: number) {
-    this._page = value;
+    let _page = +value;
+    if (Number.isNaN(_page) || _page <= 0 || parseInt(_page as any) !== _page) {
+      _page = 1;
+    }
+    this._page = _page;
   }
 
   private set perPage(value: number) {
-    this._perPage = value;
+    let _perPage = +value;
+
+    if (
+      Number.isNaN(_perPage) ||
+      _perPage <= 0 ||
+      parseInt(_perPage as any) !== _perPage
+    ) {
+      _perPage = this._perPage!;
+    }
+    this._perPage = _perPage;
   }
 
   private set sort(value: string | null) {
+    if (!value) {
+      this._sort = null;
+      return;
+    }
     this._sort = value;
   }
 
   private set sortDir(value: SortDirection | null) {
-    this._sortDir = value;
+    if (!this.sort) {
+      this._sortDir = null;
+      return;
+    }
+
+    const dir = value?.toLocaleLowerCase();
+    if (dir !== SortDirection.ASC && dir !== SortDirection.DESC) {
+      this._sortDir = SortDirection.DESC;
+      return;
+    }
+
+    this._sortDir = dir as SortDirection;
   }
 
   private set filter(value: string | null) {
+    if (!value) {
+      this._sort = null;
+      return;
+    }
     this._filter = value;
   }
 }
