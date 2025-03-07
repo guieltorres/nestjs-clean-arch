@@ -35,6 +35,26 @@ export class SearchParams {
   get filter(): string | null | undefined {
     return this._filter;
   }
+
+  private set page(value: number) {
+    this._page = value;
+  }
+
+  private set perPage(value: number) {
+    this._perPage = value;
+  }
+
+  private set sort(value: string | null) {
+    this._sort = value;
+  }
+
+  private set sortDir(value: SortDirection | null) {
+    this._sortDir = value;
+  }
+
+  private set filter(value: string | null) {
+    this._filter = value;
+  }
 }
 
 interface SearchableRepositoryInterface<
